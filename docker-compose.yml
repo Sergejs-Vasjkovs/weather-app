@@ -1,0 +1,36 @@
+# Database and API keys are read from .env (see .env.example).
+
+services:
+    app:
+        build: .
+        container_name: weather-app
+        restart: unless-stopped
+        ports:
+            - "3000:3000"
+        environment:
+            DATABASE_URL: "postgresql://${POSTGRES_USER:-user}:${POSTGRES_PASSWORD:-password}@db:5432/${POSTGRES_DB:-weather_db}"
+            OPENWEATHER_API_KEY: ${OPENWEATHER_API_KEY}
+        depends_on:
+            db:
+                condition: service_healthy
+
+    db:
+        image: postgres:16-alpine
+        container_name: weather-db
+        restart: always
+        environment:
+            POSTGRES_USER: ${POSTGRES_USER:-user}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+            POSTGRES_DB: ${POSTGRES_DB:-weather_db}
+        ports:
+            - "5432:5432"
+        volumes:
+            - pgdata:/var/lib/postgresql/data
+        healthcheck:
+            test: ["CMD-SHELL", 'pg_isready -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"']
+            interval: 5s
+            timeout: 5s
+            retries: 5
+
+volumes:
+    pgdata:

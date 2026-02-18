@@ -1,87 +1,89 @@
-# Welcome to React Router!
+# Weather App
 
-A modern, production-ready template for building full-stack React applications using React Router.
+A weather app with favorite cities, search by name, and 5-day forecast. Built with **React**, **React Router v7**, **Prisma**, **PostgreSQL**, **Docker**, and OpenWeather API.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
+## Stack
 
-## Features
+- React 19, React Router v7 (loaders, actions, SSR)
+- TypeScript, Tailwind CSS
+- Prisma + PostgreSQL
+- Docker Compose (app + DB)
 
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
+## Local development (without Docker)
 
-## Getting Started
+1. Install dependencies:
 
-### Installation
+    ```bash
+    npm install
+    ```
 
-Install the dependencies:
+2. Create `.env` from the example and fill in the variables:
 
-```bash
-npm install
-```
+    ```bash
+    cp .env.example .env
+    ```
 
-### Development
+    In `.env` you need:
+    - `DATABASE_URL` — PostgreSQL connection string (e.g. `postgresql://user:password@localhost:5432/weather_db`)
+    - `OPENWEATHER_API_KEY` — API key from [openweathermap.org/api](https://openweathermap.org/api)
 
-Start the development server with HMR:
+3. Apply the database schema (tables are created from `prisma/schema.prisma`):
 
-```bash
-npm run dev
-```
+    ```bash
+    npx prisma db push
+    ```
 
-Your application will be available at `http://localhost:5173`.
+4. Start the dev server:
 
-## Building for Production
+    ```bash
+    npm run dev
+    ```
 
-Create a production build:
+    The app will be available at `http://localhost:5173`.
+
+## Production build
 
 ```bash
 npm run build
 ```
 
+## Run with Docker
+
+Useful for running on another machine or for deployment.
+
+1. Clone the repo and go to the project folder.
+
+2. Create `.env` from the example:
+
+    ```bash
+    cp .env.example .env
+    ```
+
+3. In `.env` set `OPENWEATHER_API_KEY` (and optionally your own `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB` for production).
+
+4. Build and run:
+
+    ```bash
+    docker compose up --build -d
+    ```
+
+    The app will be available at `http://localhost:3000`. On first start, the database schema is applied automatically (`prisma db push`).
+
+## Scripts
+
+| Command              | Description                        |
+| -------------------- | ---------------------------------- |
+| `npm run dev`        | Dev server with HMR                |
+| `npm run build`      | Production build                   |
+| `npm run start`      | Run the built app                  |
+| `npm run typecheck`  | TypeScript type check              |
+| `npx prisma db push` | Apply schema to DB (no migrations) |
+| `npx prisma studio`  | UI to view DB data                 |
+
 ## Deployment
 
-### Docker Deployment
-
-To build and run using Docker:
-
-```bash
-docker build -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
-```
-
-The containerized application can be deployed to any platform that supports Docker, including:
-
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
-
-### DIY Deployment
-
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
-```
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
+The built app (Docker or `npm run build` output) can be deployed to any Node.js or Docker-capable host: AWS ECS, Google Cloud Run, Railway, Fly.io, Render, etc.
 
 ---
 
-Built with ❤️ using React Router.
+Built with React Router v7.
