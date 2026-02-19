@@ -6,7 +6,7 @@ import { prisma } from "~/db.server";
 import { THEME_KEY } from "~/constants";
 import type { Route } from "./+types/root";
 import "./app.css";
-import { NotFound } from "./routes/NotFound";
+import NotFound from "./routes/NotFound";
 
 export async function loader() {
     const favoriteCities = await prisma.favoriteCity.findMany({

@@ -1,6 +1,10 @@
 import { Link } from "react-router";
 
-export function NotFound() {
+export async function loader() {
+    return null;
+}
+
+export default function NotFound() {
     return (
         <div className="text-center mt-16">
             <p className="text-base font-semibold text-indigo-400">404</p>
